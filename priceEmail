@@ -1,0 +1,63 @@
+#I want to import requests; import BeautifulSoup; import smtplib; import time (for sleep function).
+
+import requests
+from bs4 import BeautifulSoup
+import smtplib
+import time
+
+#find the desired URL and insert:
+URL = ''
+
+#google: headers
+headers = {"User-Agent": ''}
+
+#create a function that checks the title and price
+def check_price():
+    page = requests.get(URL, headers=headers)
+
+    soup = BeautifulSoup(page.content, 'html.parser')
+
+#webscrape and search for title and price using 'F12'
+    tite = soup.find(id="")
+    price = soup.find(id="").get_text()
+
+#convert our price using an index if number is large to get whole number
+    converted_price = (price[0:5])
+
+#create our if statment: if the price drops below x then send email
+    if(converted_price < 2.99):
+        send_mail()
+
+#create a function for send mail
+#import googles blah blah email stuff
+def send_mail():
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.ehlo()
+    server.starttls()
+    server.ehlo()
+
+#use your email and secure generated password via google
+    server.login('gracethroughartistry@gmail.com', '')
+
+#now lets enter our subject and body  
+    subject = "Price Lowered - Buy!"
+    body = "Check the Link INSERT LINK"
+
+#now lets insert out message structure
+    msg = f"Subject: {subject}\n\n{body}"
+
+#send mail: from, to, msg
+#send a print statement to computer letting me know it sent
+    server.sendmail(
+        'gracethroughartistry@gmail.com',
+        'austinbedmonson@gmail.com',
+        msg
+    )
+    print("HEY YOUR EMAIL IS SENT")
+
+#for the program to check peridocially create a while loop until it becomes false
+
+#use time.sleep()
+while(True):
+    check_price()
+    time.sleep(60)
